@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dimeji's Shop</title>
+  <style>
+    /* This is how we design the page as well as the font used */
+    body {
+      font-family: Arial, sans-serif;
+      background: #0d75dd;
+      margin: 0;
+      padding: 16px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center; /* This is to center the final box horizontally */
+      align-items: center;     /* " " " " " vertically */
+      box-sizing: border-box;
+    }
+
+    /* This designs the card shown at the final step which will display all of the customers information */
+    .card {
+      width: 100%;
+      max-width: 480px;
+      background: #fff;
+      padding: 28px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.12);
+    }
+    h1 { margin-top: 0; font-size: 1.5rem; }
+    p { font-size: 1.05rem; line-height: 1.5; }
+    .label { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1 id="greeting">Welcome to our store!</h1>
+    <div id="order"></div>
+  </div>
+
+  <script>
+    // This will greet the customer when first opening the website.
+    alert("Welcome to our store!");
+
+    // This will ask the customer all of the necessary questions with prompts.
+    var name = prompt("What is your name?");
+    while (name === null || name.trim() === "") {
+      name = prompt("You did not indicate what your name was. Please try again mate! :");
+    }
+    name = name.trim();
+
+    var item = prompt("What item would you like to order? (one type of item only please my website can't handle more than one)");
+    while (item === null || item.trim() === "") {
+      item = prompt("Can you please enter the item you would like to order? :");
+    }
+    item = item.trim();
+
+    var quantity = prompt("How many of this item would you like? Please choose between 1 to 99:");
+    while (
+      quantity === null ||
+      quantity.trim() === "" ||
+      isNaN(quantity) ||
+      Number(quantity) < 1 ||
+      Number(quantity) > 99 ||
+      Number(quantity) % 1 !== 0
+    ) {
+      quantity = prompt("That is too much or too little. Please try again thanks!:");
+    }
+    quantity = Number(quantity);
+
+    // This is so the customer is greeted properly on the final card in terms of it being morning, afternoon, or night.
+    var now = new Date();
+    var hour = now.getHours();
+    var timeGreeting;
+    if (hour < 12) {
+      timeGreeting = "Good Morning";
+    } else if (hour < 18) {
+      timeGreeting = "Good Afternoon";
+    } else {
+      timeGreeting = "Good Evening";
+    }
+
+    // This will set the expected arrival date exactly 7 days from when the order was placed
+    var arrival = new Date(now);
+    arrival.setDate(now.getDate() + 7);
+    var dateOptions = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+    var arrivalText = arrival.toLocaleDateString("en-US", dateOptions);
+
+    // This will show the final card, with all the information the customer provided, as well as the expected delivery date
+    document.getElementById("greeting").textContent =
+      timeGreeting + " " + name + ", Thank you for Ordering!";
+
+    var order = document.getElementById("order");
+    function addLine(label, value) {
+      var p = document.createElement("p");
+      var l = document.createElement("span");
+      l.className = "label";
+      l.textContent = label + ": ";
+      p.appendChild(l);
+      p.appendChild(document.createTextNode(value));
+      order.appendChild(p);
+    }
+
+    addLine("Name", name);
+    addLine("Item Ordered", item);
+    addLine("Quantity Ordered", quantity);
+    addLine("Expected Arrival", arrivalText);
+  </script>
+</body>
+</html>
